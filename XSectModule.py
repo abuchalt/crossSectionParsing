@@ -7,11 +7,12 @@ def parseEXFOR(filepath, N):
     Energies = data[:,10] # [eV]
     Coeffs = data[:,4]*1E-24*N # [barns] -> [cm^2] -> [cm^-1]
     SigmaData = np.array(list(zip(Energies,Coeffs)))
+    SigmaData = SigmaData[SigmaData[:, 0].argsort()] # Sort
     return SigmaData
 
 def parseXCOM(filepath, ρ):
     data = np.genfromtxt(filepath, delimiter=" ", skip_header=2)
-    Energies = data[:,0]/1000000 # [MeV] -> [eV]
+    Energies = data[:,0]*1000000 # [MeV] -> [eV]
     Coeffs = data[:,1]*ρ # [cm^2/g] -> [cm^-1]
     # coeffsNoCoh = data[:,2]*ρ # [cm^2/g] -> [cm^-1]
     muData = np.array(list(zip(Energies,Coeffs)))
