@@ -30,3 +30,7 @@ def photonWavelength(E):
     h = 4.1357E-15 # [eV.s]
     c = 2.998E17 # [nm/s]
     return h*c/E # [nm]
+
+def numberDensity(ρ, M):
+    N_A = 6.022E23 # Avogadro's number [mol^-1]
+    return ρ*N_A/M # [cm^-3]
