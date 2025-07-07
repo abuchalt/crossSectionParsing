@@ -1,0 +1,6 @@
+/.venv
+/examples
+/__pycache__
+/CrossSectionData
+/plots
+/SpectrumDataNDA
