@@ -3,6 +3,10 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
+def logMean(x, y):
+    return np.exp(np.log(x*y)/2)
+    # return (y-x)/(np.log(y/x))
+
 # Universal Constants
 # ------------------------------------------------------------------------------
 N_A = 6.022E23
@@ -52,9 +56,14 @@ for element in myList:
     plt.xlim(Erange)
     visible_y = np.append(visible_y, ydata[(xdata >= Erange[0]) & (xdata <= Erange[1])])
 
-# Formatting   
+# Y lim
+ytop = np.max(visible_y)*margin
+ybot = np.min(visible_y)/margin
+ymid = logMean(ybot, ytop)
 if len(visible_y) > 0: # Set y-limits based on visible data
-    plt.ylim(np.min(visible_y)/margin, np.max(visible_y)*margin)
+    plt.ylim(ybot, ytop)
+
+# Formatting
 plt.xscale('log')
 plt.yscale('log')
 plt.ylabel('Linear Attenuation Coefficient [/cm]')
@@ -92,9 +101,20 @@ for element in myList:
     plt.xlim(λrange)
     visible_y = np.append(visible_y, ydata[(xdata >= λrange[0]) & (xdata <= λrange[1])])
 
-# Formatting   
+# Y lim
+ytop = np.max(visible_y)*margin
+ybot = np.min(visible_y)/margin
+ymid = logMean(ybot, ytop)
 if len(visible_y) > 0: # Set y-limits based on visible data
-    plt.ylim(np.min(visible_y)/margin, np.max(visible_y)*margin)
+    plt.ylim(ybot, ytop)
+
+# Add Thermal Line
+thermal = xsm.neutronWavelength(0.025)
+plt.plot([thermal,thermal], [ybot,ytop], 'k--')
+plt.annotate('Cold', xy=(logMean(thermal, λrange[1]),ytop/2), xycoords='data', ha='center')
+plt.annotate('Epithermal', xy=(logMean(thermal, λrange[0]),ytop/2), xycoords='data', ha='center')
+
+# Formatting
 plt.xscale('log')
 plt.yscale('log')
 plt.ylabel('Linear Attenuation Coefficient [/cm]')
